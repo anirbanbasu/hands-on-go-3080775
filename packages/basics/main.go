@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello, World from Gopher!")
+	fmt.Println("Hello World, from Gopher!")
 	tz, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		panic(err)
