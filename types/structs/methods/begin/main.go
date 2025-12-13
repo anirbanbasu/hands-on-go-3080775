@@ -9,13 +9,18 @@ type author struct {
 // fullName returns the full name of the author
 //
 
+func (a author) fullName() string {
+	return a.first + " " + a.last
+}
+
 func main() {
 	// initialize author
-	// a := author{
-	// 	first: "Marcus",
-	// 	last:  "Aurelius",
-	// }
+	a := author{
+		first: "Marcus",
+		last:  "Aurelius",
+	}
 
 	// print the author's full name
 	//
+	println(a.fullName())
 }
