@@ -7,3 +7,5 @@ require (
 	github.com/jboursiquot/go-proverbs v0.0.2
 	golang.org/x/exp v0.0.0-20220921164117-439092de6870
 )
+
+require github.com/google/uuid v1.6.0
