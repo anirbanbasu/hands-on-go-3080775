@@ -40,7 +40,7 @@ func (s symbolCounter) name() string {
 func (s symbolCounter) count(input string) int {
 	result := 0
 	for _, char := range input {
-		if !unicode.IsLetter(char) && !unicode.IsNumber(char) {
+		if unicode.IsSymbol(char) || unicode.IsPunct(char) {
 			result++
 		}
 	}
