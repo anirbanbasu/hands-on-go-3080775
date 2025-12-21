@@ -1,3 +1,5 @@
+_December 22, 2025: Having finished the LinkedIn course, this repository is archived with practice code._
+
 # Hands-On Introduction: Go 
 This is the repository for the LinkedIn Learning course Hands-On Introduction: Go. The full course is available from [LinkedIn Learning][lil-course-url].
 
