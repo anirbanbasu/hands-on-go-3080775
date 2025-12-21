@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"strings"
+	"sync"
 	"time"
 	"unicode"
 
@@ -38,6 +39,7 @@ func (l letterCounter) count(input string) int {
 			result++
 		}
 	}
+	fmt.Println(l.name(), "finished")
 	return result
 }
 
@@ -56,6 +58,7 @@ func (n numberCounter) count(input string) int {
 			result++
 		}
 	}
+	fmt.Println(n.name(), "finished")
 	return result
 }
 
@@ -74,6 +77,7 @@ func (s symbolCounter) count(input string) int {
 			result++
 		}
 	}
+	fmt.Println(s.name(), "finished")
 	return result
 }
 
@@ -84,10 +88,25 @@ func doAnalysis(data string, counters ...counter) map[string]int {
 	// capture the length of the words in the data
 	analysis["words"] = len(strings.Fields(data))
 
+	// initialize a wait group for the goroutines that will be launched
+	var waitGroup sync.WaitGroup
+	var mutex sync.Mutex
+
 	// loop over the counters and use their name as the key
 	for _, c := range counters {
-		analysis[c.name()] = c.count(data)
+		waitGroup.Add(1)
+		fmt.Println("Starting goroutine for", c.name(), "and waiting for it to finish...")
+		go func(n counter) {
+			defer waitGroup.Done()
+			mutex.Lock()
+			defer mutex.Unlock()
+			analysis[n.name()] = n.count(data)
+		}(c)
+		// analysis[c.name()] = c.count(data)
 	}
+
+	// wait for all goroutines to finish
+	waitGroup.Wait()
 
 	// return the map
 	return analysis
@@ -102,6 +121,9 @@ func main() {
 	}()
 
 	// use os package to read the file specified as a command line argument
+	if len(os.Args) < 2 {
+		panic(fmt.Errorf("please provide a file to analyse"))
+	}
 	bs, err := os.ReadFile(os.Args[1])
 	if err != nil {
 		panic(fmt.Errorf("failed to read file: %s", err))
